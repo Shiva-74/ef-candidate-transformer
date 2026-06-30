@@ -5,6 +5,7 @@ A pipeline that ingests candidate information from **multiple heterogeneous sour
 ---
 ## Problem Statement  
 Eightfold ingests candidate data from many places at once. Downstream products need one clean, canonical profile per candidate: a fixed set of fields, normalised formats, deduplicated across sources, and a record of where each value came from and how confident we are in it.
+
 ---
 
 ## Setup & Installation
