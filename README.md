@@ -94,13 +94,16 @@ At least one of `--csv`, `--resume`, or `--github-url` is required.
  
 **Examples:**
  
-```bash
+```
 # CSV only, default schema
 python main.py --csv sample_inputs/sample.csv
  
 # CSV + custom config (renamed fields, E.164 phones, canonical skills)
 python main.py --csv sample_inputs/sample.csv --config configs/custom_config.json
- 
+
+# PDF resume only
+python main.py --resume path/to/resume.pdf
+
 # All three sources combined
 python main.py \
   --csv sample_inputs/sample.csv \
@@ -157,6 +160,9 @@ Error: Output validation failed:
 ```
 
 Exit code `1` is returned — safe for shell scripting.
+
+
+The pipeline always prefers traceable data over inferred values. Missing information is left empty rather than guessed, and every output field can be traced back to its source.
 
 
 ---
