@@ -311,9 +311,6 @@ venv\Scripts\activate
 
 # macOS / Linux
 source venv/bin/activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
 ```
 
 **`requirements.txt`:**
@@ -327,6 +324,12 @@ requests
 streamlit
 pytest
 ```
+
+### 3. Install dependencies
+```
+pip install -r requirements.txt
+```
+
 
 > **Note:** `PyMuPDF` installs as `fitz`. If you hit a build error on Windows, install the pre-built wheel:
 > `pip install pymupdf`
