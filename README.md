@@ -339,7 +339,7 @@ pip install -r requirements.txt
 
 ---
 
-### Streamlit UI
+### Streamlit UI(Easier Access)
 
 A minimal web UI is provided for interactive exploration:
 
