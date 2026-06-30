@@ -525,5 +525,3 @@ If the same `(field, source)` pair appears multiple times (e.g. two emails from 
 | **Scale** | The pipeline is stateless and processes one candidate at a time. For thousands of candidates, wrap `run_pipeline` in a process pool or queue; no internal state blocks parallelism. |
 | **ATS JSON blob** | Not implemented as a dedicated adapter. JSON blobs with arbitrary field names can be mapped via the config's `"from"` key if they first go through a thin normalisation shim. |
 =======
-# EF-Candidate-Transformer
-A configurable multi-source candidate data transformation pipeline that extracts, normalizes, merges, validates, and projects candidate data from structured and unstructured sources into a canonical JSON profile with provenance and confidence tracking.
