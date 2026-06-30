@@ -191,8 +191,50 @@ Expected output: **61 passed**.
 | `test_pipeline_validate_propagation.py` | 6 | **The critical bug fix** — confirms `ValueError` from `validate.check()` now propagates out of `run_pipeline()` to the caller; valid output still returns normally |
 
 ---
-
+## Test Outputs  
 A sample run on sample_inputs/sample.csv is included in this repo: output/profile.json (default config) and output/profile_custom.json (custom config — renamed fields, E.164 phones, canonical skills). These show the actual output produced by the pipeline on the provided sample inputs.
+
+---
+
+## Architecture Overview
+
+```
+┌─────────────┐  ┌─────────────┐  ┌──────────────┐
+│ Recruiter   │  │ PDF Resume  │  │  GitHub API  │
+│ CSV Export  │  │  (pdf/docx) │  │  (REST)      │
+└──────┬──────┘  └──────┬──────┘  └──────┬───────┘
+       │                │                │
+       ▼                ▼                ▼
+┌─────────────────────────────────────────────────┐
+│              ADAPTERS  (adapters/)              │
+│  Each adapter emits typed RawFieldValue claims  │
+│  with: field, value, source, method, confidence │
+└───────────────────────┬─────────────────────────┘
+                        │  List[RawFieldValue]
+                        ▼
+┌─────────────────────────────────────────────────┐
+│             MERGE  (merge.py)                   │
+│  Group → deduplicate → conflict-resolve →       │
+│  build canonical Candidate + provenance         │
+└───────────────────────┬─────────────────────────┘
+                        │  Candidate (Pydantic)
+                        ▼
+┌─────────────────────────────────────────────────┐
+│             PROJECT  (project.py)               │
+│  Config-driven projection: field selection,     │
+│  renaming, normalisation, missing-value policy  │
+└───────────────────────┬─────────────────────────┘
+                        │  dict (output shape)
+                        ▼
+┌─────────────────────────────────────────────────┐
+│             VALIDATE  (validate.py)             │
+│  Type checks + required-field checks against    │
+│  the config spec — raises ValueError on failure │
+└───────────────────────┬─────────────────────────┘
+                        │
+                        ▼
+                  JSON Output / UI
+```
 
 ---
 
