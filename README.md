@@ -311,7 +311,11 @@ venv\Scripts\activate
 
 # macOS / Linux
 source venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
 ```
+
 
 **`requirements.txt`:**
 ```
@@ -323,11 +327,6 @@ PyMuPDF
 requests
 streamlit
 pytest
-```
-
-### 3. Install dependencies
-```
-pip install -r requirements.txt
 ```
 
 
