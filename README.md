@@ -150,7 +150,7 @@ Running the default CSV example produces a CLI summary like:
 
 and writes the projected JSON to `output/profile.json` (full canonical record to `output/candidate_full.json` with `--full`).
 
-#### Error Handling at CLI Level
+### Error Handling at CLI Level
 
 If validation fails (e.g. a required field is missing and `on_missing: "error"`), the pipeline raises `ValueError` which the CLI catches and exits cleanly:
 
@@ -159,7 +159,7 @@ Error: Output validation failed:
   • Required field 'primary_email' is missing from output.
 ```
 
-Exit code `1` is returned — safe for shell scripting.
+Exit code `1` is returned - safe for shell scripting.
 
 
 The pipeline always prefers traceable data over inferred values. Missing information is left empty rather than guessed, and every output field can be traced back to its source.
