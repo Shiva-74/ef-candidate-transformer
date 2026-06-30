@@ -300,8 +300,8 @@ ef_candiadte_tf/
 
 ```bash
 # 1. Clone the repo
-git clone <your-repo-url>
-cd ef_candiadte_tf
+git clone https://github.com/Shiva-74/ef-candidate-transformer.git
+cd ef-candidate-transformer
 
 # 2. Create and activate a virtual environment
 python -m venv venv
