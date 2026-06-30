@@ -1,0 +1,42 @@
+{
+  "candidate_id": "C001",
+  "full_name": "Arjun Sharma",
+  "_full_name_confidence": 0.6,
+  "emails": [
+    "arjun.sharma@gmail.com"
+  ],
+  "_emails_confidence": 1.0,
+  "phones": [
+    "+919876543210"
+  ],
+  "_phones_confidence": 1.0,
+  "location": {
+    "city": "Mumbai",
+    "region": null,
+    "country": null
+  },
+  "_location_confidence": 0.6,
+  "links": {
+    "linkedin": "https://linkedin.com/in/arjunsharma",
+    "github": null,
+    "portfolio": null,
+    "other": []
+  },
+  "_links_confidence": 0.6,
+  "headline": null,
+  "years_experience": 4.0,
+  "_years_experience_confidence": 0.6,
+  "skills": null,
+  "experience": [
+    {
+      "company": "Google",
+      "title": "Software Engineer",
+      "start": null,
+      "end": null,
+      "summary": null
+    }
+  ],
+  "_experience_confidence": 0.6,
+  "education": null,
+  "_overall_confidence": 0.7
+}

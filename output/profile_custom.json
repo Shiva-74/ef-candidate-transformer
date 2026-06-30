@@ -1,0 +1,28 @@
+{
+  "full_name": "Arjun Sharma",
+  "_full_name_confidence": 0.6,
+  "primary_email": "arjun.sharma@gmail.com",
+  "_primary_email_confidence": 1.0,
+  "phone": "+919876543210",
+  "_phone_confidence": 1.0,
+  "skills": null,
+  "headline": null,
+  "location": {
+    "city": "Mumbai",
+    "region": null,
+    "country": null
+  },
+  "_location_confidence": 0.6,
+  "experience": [
+    {
+      "company": "Google",
+      "title": "Software Engineer",
+      "start": null,
+      "end": null,
+      "summary": null
+    }
+  ],
+  "_experience_confidence": 0.6,
+  "education": null,
+  "_overall_confidence": 0.7
+}
