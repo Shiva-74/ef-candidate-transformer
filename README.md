@@ -334,9 +334,28 @@ pip install -r requirements.txt
 > **Note:** `PyMuPDF` installs as `fitz`. If you hit a build error on Windows, install the pre-built wheel:
 > `pip install pymupdf`
 
----
 
 ## How to Run
+
+---
+
+### Streamlit UI
+
+A minimal web UI is provided for interactive exploration:
+
+```bash
+streamlit run app.py
+```
+
+Then open [http://localhost:8501](http://localhost:8501) in your browser.
+
+The UI lets you:
+- Upload a CSV, PDF resume, or enter a GitHub URL
+- Paste or upload a custom config JSON
+- Run the pipeline and view the canonical profile + projected output side-by-side
+- See the provenance table and confidence scores
+
+---
 
 ### CLI
 
@@ -431,23 +450,6 @@ Error: Output validation failed:
 
 Exit code `1` is returned — safe for shell scripting.
 
----
-
-### Streamlit UI
-
-A minimal web UI is provided for interactive exploration:
-
-```bash
-streamlit run app.py
-```
-
-Then open [http://localhost:8501](http://localhost:8501) in your browser.
-
-The UI lets you:
-- Upload a CSV, PDF resume, or enter a GitHub URL
-- Paste or upload a custom config JSON
-- Run the pipeline and view the canonical profile + projected output side-by-side
-- See the provenance table and confidence scores
 
 ---
 
