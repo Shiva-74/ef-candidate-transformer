@@ -186,6 +186,66 @@ A sample run on sample_inputs/sample.csv is included in this repo: output/profil
 
 ---
 
+## Edge Cases Handled
+
+| Edge Case | Handling |
+|-----------|----------|
+| Source file missing / unreadable | Logged as warning, pipeline continues with remaining sources |
+| All sources return no data | `ValueError` raised — at least one source must yield claims |
+| Excel scientific-notation phones (`9.17E+11`) | Converted to integer string before E.164 parsing |
+| Phone in PDF that looks like a date fragment | Strict regex (10–15 consecutive digits OR `+` prefix) avoids false matches |
+| Conflicting names across sources | Most-agreed-on value wins; confidence scales with agreement count |
+| Required field missing with `on_missing: error` | `ValueError` raised by `project.py`, propagated through `pipeline.py` to CLI (`sys.exit(1)`) |
+| Required field missing with `on_missing: null` | Field present in output as `null` |
+| Required field missing with `on_missing: omit` | Field absent from output — validate does not re-flag it |
+| Type mismatch on required field | `ValueError` from `validate.check()` |
+| Type mismatch on optional field | Warning logged only, pipeline continues |
+| GitHub API rate limit (429) | Waits `Retry-After` seconds and retries up to 2 times |
+| GitHub returns 404 | Logged as warning, returns empty claims |
+| Unknown column in CSV | Silently skipped (unmapped column) |
+| Empty string / empty list treated as missing | `project.py` treats `""` and `[]` the same as `None` |
+
+---
+
+## Project Structure
+
+```
+ef_candiadte_tf/
+│
+├── adapters/
+│   ├── recruiter_csv.py      # Structured CSV → RawFieldValue claims
+│   ├── resume_pdf.py         # PDF resume text → RawFieldValue claims
+│   └── github_profile.py     # GitHub REST API → RawFieldValue claims
+│
+├── configs/
+│   ├── default_config.json   # Full canonical schema output config
+│   └── custom_config.json    # Compact renamed-field config
+│
+├── sample_inputs/
+│   └── sample.csv            # Two-row recruiter CSV for quick testing
+│
+├── output/                   # Populated at runtime
+│   └── profile.json
+│
+├── tests/
+│   ├── test_validate.py                        # 21 unit tests for validate.check()
+│   ├── test_project.py                         # 34 unit tests for project.project()
+│   └── test_pipeline_validate_propagation.py   # 6 integration tests for the bug fix
+│
+├── candidate_schema.py   # Pydantic models: Candidate, Skill, Experience, etc.
+├── normalize.py          # Phone (E.164), date (YYYY-MM), skill (canonical name)
+├── merge.py              # Claim grouping, conflict resolution, Candidate builder
+├── project.py            # Config-driven projection: path resolution, normalizers
+├── validate.py           # Post-projection validation: required fields, type checks
+├── pipeline.py           # Orchestrator: extract → merge → project → validate
+├── main.py               # CLI entry point (argparse)
+├── app.py                # Streamlit UI
+└── requirements.txt
+```
+
+---
+
+
 ## Design Decisions
 
 ### 1. Claim-based intermediate representation
