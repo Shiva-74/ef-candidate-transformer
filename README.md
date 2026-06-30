@@ -8,6 +8,16 @@ Eightfold ingests candidate data from many places at once. Downstream products n
 
 ---
 
+## Source Types Supported
+
+### Structured Sources
+- **Recruiter CSV** — tabular data with defined columns, read directly as fields (confidence 1.0)
+
+### Unstructured Sources
+- **PDF Resume** — fields extracted from free text via regex/section parsing (confidence 0.75–0.85)
+- **GitHub Profile** — fields inferred from bio/repo data via the GitHub API (confidence 0.60–0.95 depending on field)
+
+---
 ## Setup & Installation
 
 ### Prerequisites
