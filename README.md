@@ -111,9 +111,6 @@ python main.py \
 | `--full` | off | Also write full canonical record to `output/candidate_full.json` |
 | `--quiet` | off | Suppress INFO logs |
 
-## Sample Output
- 
-Running the default CSV example produces a CLI summary like:
  
 ## Sample Output
  
@@ -137,3 +134,52 @@ Running the default CSV example produces a CLI summary like:
   Sources    : 12 provenance entries
 =======================================================
 ```
+
+and writes the projected JSON to `output/profile.json` (full canonical record to `output/candidate_full.json` with `--full`).
+
+#### Error Handling at CLI Level
+
+If validation fails (e.g. a required field is missing and `on_missing: "error"`), the pipeline raises `ValueError` which the CLI catches and exits cleanly:
+
+```
+Error: Output validation failed:
+  • Required field 'primary_email' is missing from output.
+```
+
+Exit code `1` is returned — safe for shell scripting.
+
+
+---
+
+## Running Tests
+
+```bash
+# Run all 61 tests
+python -m pytest tests/ -v
+
+# Run only the validate unit tests
+python -m pytest tests/test_validate.py -v
+
+# Run only the project unit tests
+python -m pytest tests/test_project.py -v
+
+# Run only the pipeline integration tests (the bug-fix tests)
+python -m pytest tests/test_pipeline_validate_propagation.py -v
+
+# Run with short traceback on failure
+python -m pytest tests/ --tb=short
+```
+
+Expected output: **61 passed**.
+
+### What the Tests Cover
+
+| Test File | Count | What it verifies |
+|-----------|-------|-----------------|
+| `test_validate.py` | 21 | `validate.check()` — required fields, type checks, all three `on_missing` modes, multi-error reporting, edge cases |
+| `test_project.py` | 34 | `project.project()` — scalar/nested/array-index/list-map path resolution, on_missing policies, E.164+canonical normalizers, `include_confidence`, Pydantic→dict serialization |
+| `test_pipeline_validate_propagation.py` | 6 | **The critical bug fix** — confirms `ValueError` from `validate.check()` now propagates out of `run_pipeline()` to the caller; valid output still returns normally |
+
+---
+
+
