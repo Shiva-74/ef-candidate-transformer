@@ -182,4 +182,39 @@ Expected output: **61 passed**.
 
 ---
 
+A sample run on sample_inputs/sample.csv is included in this repo: output/profile.json (default config) and output/profile_custom.json (custom config — renamed fields, E.164 phones, canonical skills). These show the actual output produced by the pipeline on the provided sample inputs.
+
+---
+
+## Design Decisions
+
+### 1. Claim-based intermediate representation
+Every adapter emits `RawFieldValue(field, value, source, method, confidence)` rather than a half-filled `Candidate`. This keeps adapters thin and lets the merge layer be the single place that resolves conflicts. It also makes it easy to add a new source without touching any other module.
+
+### 2. Confidence is derived, not asserted
+Confidence is not a magic number. It follows a clear formula:
+- 1 source agreeing → 0.60
+- 2 sources agreeing → 0.85
+- 3+ sources agreeing → 0.95
+- Structured source (CSV) → 1.0 (direct field)
+- Regex from PDF → 0.75–0.85
+- GitHub API → 0.60–0.95 depending on field
+
+This makes confidence explainable and auditable via the provenance table.
+
+### 3. Clean separation between canonical record and projection
+The `Candidate` model is never mutated after merge. The projection layer reads from it and produces an output dict — these two concerns never mix. This means the same canonical record can serve any number of different output configs without re-running the adapters or merge.
+
+### 4. Validate-before-return is a hard gate
+`validate.check()` raises `ValueError` on hard failures (required field missing, type mismatch on required field). `pipeline.py` intentionally does **not** catch this — it propagates to the CLI's `except ValueError → sys.exit(1)`. This ensures the spec's "validate before returning" bullet is actually enforced, not silently papered over.
+
+### 5. Graceful degradation on bad sources
+A missing file, a corrupt PDF, or a GitHub 404 logs a warning and continues — it does not crash the run. The pipeline only aborts if **all** sources yield zero claims.
+
+### 6. Provenance deduplication
+If the same `(field, source)` pair appears multiple times (e.g. two emails from the same CSV), only one provenance row is kept (the higher confidence one). This keeps the provenance table clean and readable.
+
+---
+
+
 
