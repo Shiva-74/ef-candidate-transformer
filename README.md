@@ -1,5 +1,5 @@
+
 # Multi-Source Candidate Data Transformer
-### Eightfold Engineering Intern Assignment (Jul–Dec 2026)
 
 A pipeline that ingests candidate information from **multiple heterogeneous sources**, deduplicates and merges it into a single canonical profile, and emits clean, schema-valid JSON — with full provenance and configurable output projection.
 
@@ -524,3 +524,6 @@ If the same `(field, source)` pair appears multiple times (e.g. two emails from 
 | **Location parsing** | GitHub returns free-text location (e.g. "Earth", "Bengaluru, India") — too unreliable to split into city/region/country, so intentionally omitted from the GitHub adapter. |
 | **Scale** | The pipeline is stateless and processes one candidate at a time. For thousands of candidates, wrap `run_pipeline` in a process pool or queue; no internal state blocks parallelism. |
 | **ATS JSON blob** | Not implemented as a dedicated adapter. JSON blobs with arbitrary field names can be mapped via the config's `"from"` key if they first go through a thin normalisation shim. |
+=======
+# EF-Candidate-Transformer
+A configurable multi-source candidate data transformation pipeline that extracts, normalizes, merges, validates, and projects candidate data from structured and unstructured sources into a canonical JSON profile with provenance and confidence tracking.
